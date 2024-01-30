@@ -2,6 +2,7 @@ package ehGarden;
 
 import java.sql.Connection;
 import java.sql.DriverManager;
+import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.ArrayList;
@@ -37,8 +38,6 @@ public class GestorArboles {
 				try {	
 				
 				System.out.println("Ingrese los detalles del árbol:");
-				System.out.println("Id:\n");
-				int id = Integer.parseInt(scan.nextLine());
 				System.out.println("nombre_comun:\n");
 				String nombreComun = scan.nextLine();
 				System.out.println("nombre_cientifico:\n");
@@ -59,10 +58,13 @@ public class GestorArboles {
 
 					Statement st = conexion.createStatement();
 
-					String sql = "insert into arboles (id, nombre_comun, nombre_cientifico, habitat, altura, origen) "
-							+ "VALUES ('" + id + "', '" + nombreComun + "', '" + nombreCientifico + "', '" + habitat + "', '" + altura + "', '" + origen + "');"; 
-							
-					st.execute(sql);
+					PreparedStatement preparedSt = conexion.prepareStatement("INSERT INTO arboles (nombre_comun,nombre_cientifico,habitat,altura,origen) VALUES (?,?,?,?,?)");
+					preparedSt.setString(1 , nombreComun );
+					preparedSt.setString(2, nombreCientifico);
+					preparedSt.setString(3, habitat);
+					preparedSt.setInt(4, altura);
+					preparedSt.setString(5, origen);
+					preparedSt.execute();
 
 					System.out.println("fila insertada");
 
