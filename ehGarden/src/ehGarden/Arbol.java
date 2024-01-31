@@ -1,14 +1,17 @@
 package ehGarden;
 
+import java.sql.Date;
+
 public class Arbol {
 
 	
 	private int id;
 	private String nombreComun;
 	private String nombreCientifico;
-	private String habitat;
+	private Habitat habitat;
 	private int altura;
-	private String origen;
+	private Date fecha_encontrada;
+	
 	public int getId() {
 		return id;
 	}
@@ -27,11 +30,18 @@ public class Arbol {
 	public void setNombreCientifico(String nombreCientifico) {
 		this.nombreCientifico = nombreCientifico;
 	}
-	public String getHabitat() {
+
+	public Habitat getHabitat() {
 		return habitat;
 	}
-	public void setHabitat(String habitat) {
+	public void setHabitat(Habitat habitat) {
 		this.habitat = habitat;
+	}
+	public Date getFecha_encontrada() {
+		return fecha_encontrada;
+	}
+	public void setFecha_encontrada(Date fecha_encontrada) {
+		this.fecha_encontrada = fecha_encontrada;
 	}
 	public int getAltura() {
 		return altura;
@@ -39,22 +49,16 @@ public class Arbol {
 	public void setAltura(int altura) {
 		this.altura = altura;
 	}
-	public String getOrigen() {
-		return origen;
-	}
-	public void setOrigen(String origen) {
-		this.origen = origen;
-	}
 	
 	
-	public Arbol(int id, String nombreComun, String nombreCientifico, String habitat, int altura, String origen) {
+	public Arbol(int id, String nombreComun, String nombreCientifico, Habitat habitat, int altura, Date fecha_encontrada) {
 		super();
 		this.id = id;
 		this.nombreComun = nombreComun;
 		this.nombreCientifico = nombreCientifico;
 		this.habitat = habitat;
 		this.altura = altura;
-		this.origen = origen;
+		this.fecha_encontrada = fecha_encontrada;
 	}
 	
 	
