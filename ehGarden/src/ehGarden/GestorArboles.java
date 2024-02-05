@@ -22,6 +22,8 @@ public class GestorArboles {
 		Scanner scan = new Scanner(System.in);
 		ArrayList<Arbol> arboles = new ArrayList<Arbol>();
 
+	
+		
 		int opcion;
 
 		do {
@@ -85,42 +87,45 @@ public class GestorArboles {
 	}
 
 	private static void INSERTAR() {
+		Arbol a = new Arbol();
+		Habitat h = new Habitat();
+		a.setHabitat(h);
 		Scanner scan = new Scanner(System.in);
 
 		try {
 
 			System.out.println("Ingrese los detalles del árbol:");
 			System.out.println("nombre_comun:\n");
-			String nombreComun = scan.nextLine();
+			a.setNombreComun(scan.nextLine());
 			System.out.println("nombre_cientifico:\n");
-			String nombreCientifico = scan.nextLine();
+			a.setNombreCientifico(scan.nextLine());
 			System.out.println("altura:\n");
-			int altura = Integer.parseInt(scan.nextLine());
+			a.setAltura(Integer.parseInt(scan.nextLine()));
 			System.out.println("origen:\n");
-			String origen = scan.nextLine();
+			a.setOrigen(scan.nextLine());
 			System.out.println("idHabitat:\n");
-			int idHabitat = Integer.parseInt(scan.nextLine());
+			a.getHabitat().setId(Integer.parseInt(scan.nextLine()));
 			System.out.println("fecha_encontrada:\n");
-			Date fechaEncontrada = Date.valueOf(scan.nextLine());
+			a.setFecha_encontrada(Date.valueOf(scan.nextLine()));
 			System.out.println("singular:\n");
-			boolean singular = Boolean.parseBoolean(scan.nextLine());
+			a.setSingular(Boolean.parseBoolean(scan.nextLine()));
+			
+			
 			Class.forName("com.mysql.cj.jdbc.Driver");
 
 			Connection conexion = DriverManager.getConnection("jdbc:mysql://" + host + "/" + BBDD, usuario,
 					contrasenia);
 
-			Statement st = conexion.createStatement();
-
 			PreparedStatement preparedSt = conexion.prepareStatement(
 					"INSERT INTO arboles (nombre_comun,nombre_cientifico,id_habitat,altura,origen,fecha_encontrada,singular) VALUES (?,?,?,?,?,?,?)");
 			
-			preparedSt.setString(1, nombreComun);
-			preparedSt.setString(2, nombreCientifico);
-			preparedSt.setInt(3, idHabitat);
-			preparedSt.setInt(4, altura);
-			preparedSt.setString(5, origen);
-			preparedSt.setDate(6, fechaEncontrada);
-			preparedSt.setBoolean(7, singular);
+			preparedSt.setString(1, a.getNombreComun());
+			preparedSt.setString(2, a.getNombreCientifico());
+			preparedSt.setInt(3, a.getHabitat().getId());
+			preparedSt.setInt(4, a.getAltura());
+			preparedSt.setString(5, a.getOrigen());
+			preparedSt.setDate(6, a.getFecha_encontrada());
+			preparedSt.setBoolean(7, a.isSingular());
 			
 			preparedSt.execute();
 
@@ -139,9 +144,46 @@ public class GestorArboles {
 		Connection conexion = DriverManager.getConnection("jdbc:mysql://" + host + "/" + BBDD, usuario,
 				contrasenia);
 
-		Statement st = conexion.createStatement();
+
 		
 	
+	}
+	
+	public static void MODIFICAR() {
+		Arbol a = new Arbol();
+		Habitat h = new Habitat();
+		a.setHabitat(h);
+		
+		try {
+			
+			Connection conexion;
+		
+				conexion = DriverManager.getConnection("jdbc:mysql://" + host + "/" + BBDD, usuario,
+						contrasenia);
+			
+			
+			PreparedStatement preparedSt = conexion.prepareStatement("UPDATE arboles SET 'nombre_comun' = ?, nombre_cientifico = ?,id_habitat = ?,altura = ?,origen = ?,fecha_encontrada= ?, singular = ? WHERE id = ?");
+			
+			preparedSt.setString(1, a.getNombreComun());
+			preparedSt.setString(2, a.getNombreCientifico());
+			preparedSt.setInt(3, a.getHabitat().getId());
+			preparedSt.setInt(4, a.getAltura());
+			preparedSt.setString(5, a.getOrigen());
+			preparedSt.setDate(6, a.getFecha_encontrada());
+			preparedSt.setBoolean(7, a.isSingular());
+			preparedSt.setInt(8, a.getId());
+			
+			preparedSt.execute();
+			
+			
+			Class.forName("com.mysql.cj.jdbc.Driver");
+		} catch (ClassNotFoundException e) {
+			e.printStackTrace();
+		} catch (SQLException e) {
+			System.out.println("Error al conectarse con la base de datos");
+			e.printStackTrace();
+		}
+		
 	}
 
 }

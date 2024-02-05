@@ -12,6 +12,7 @@ public class Arbol {
 	private int altura;
 	private Date fecha_encontrada;
 	private boolean singular;
+	private String origen;
 	
 	public int getId() {
 		return id;
@@ -47,15 +48,20 @@ public class Arbol {
 	public void setAltura(int altura) {
 		this.altura = altura;
 	}
+	
+
 	public boolean isSingular() {
 		return singular;
 	}
 	public void setSingular(boolean singular) {
 		this.singular = singular;
 	}
-	
-	
-	
+	public String getOrigen() {
+		return origen;
+	}
+	public void setOrigen(String origen) {
+		this.origen = origen;
+	}
 	public Arbol(int id, String nombreComun, String nombreCientifico, Habitat habitat, int altura, Date fecha_encontrada) {
 		super();
 		this.id = id;
