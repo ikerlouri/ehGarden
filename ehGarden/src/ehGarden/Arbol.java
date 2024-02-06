@@ -1,6 +1,6 @@
 package ehGarden;
 
-import java.sql.Date;
+import java.util.Date;
 
 public class Arbol {
 
@@ -14,8 +14,13 @@ public class Arbol {
 	private boolean singular;
 	private String origen;
 	
+	
+	
 	public int getId() {
 		return id;
+	}
+	public void setId(int id) {
+		this.id = id;
 	}
 	public String getNombreComun() {
 		return nombreComun;

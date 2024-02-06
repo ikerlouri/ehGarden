@@ -22,8 +22,6 @@ public class GestorArboles {
 		Scanner scan = new Scanner(System.in);
 		ArrayList<Arbol> arboles = new ArrayList<Arbol>();
 
-	
-		
 		int opcion;
 
 		do {
@@ -43,22 +41,22 @@ public class GestorArboles {
 				INSERTAR();
 				break;
 			case 2:
-				
+
 				break;
 			case 3:
+				MODIFICAR();
+
 				break;
 			case 4:
 				VISUALIZAR();
 				break;
-			case 5:
 				
 			}
-			
+
 		} while (opcion != 0);
 		System.out.println("Programa finalizado.");
 	}
 
-	
 	private static void VISUALIZAR() {
 		try {
 
@@ -109,8 +107,7 @@ public class GestorArboles {
 			a.setFecha_encontrada(Date.valueOf(scan.nextLine()));
 			System.out.println("singular:\n");
 			a.setSingular(Boolean.parseBoolean(scan.nextLine()));
-			
-			
+
 			Class.forName("com.mysql.cj.jdbc.Driver");
 
 			Connection conexion = DriverManager.getConnection("jdbc:mysql://" + host + "/" + BBDD, usuario,
@@ -118,15 +115,15 @@ public class GestorArboles {
 
 			PreparedStatement preparedSt = conexion.prepareStatement(
 					"INSERT INTO arboles (nombre_comun,nombre_cientifico,id_habitat,altura,origen,fecha_encontrada,singular) VALUES (?,?,?,?,?,?,?)");
-			
+
 			preparedSt.setString(1, a.getNombreComun());
 			preparedSt.setString(2, a.getNombreCientifico());
 			preparedSt.setInt(3, a.getHabitat().getId());
 			preparedSt.setInt(4, a.getAltura());
 			preparedSt.setString(5, a.getOrigen());
-			preparedSt.setDate(6, a.getFecha_encontrada());
+			preparedSt.setDate(6, new java.sql.Date(a.getFecha_encontrada().getTime()));
 			preparedSt.setBoolean(7, a.isSingular());
-			
+
 			preparedSt.execute();
 
 			System.out.println("fila insertada");
@@ -138,42 +135,58 @@ public class GestorArboles {
 			e.printStackTrace();
 		}
 	}
-	public static void ELIMINAR() throws ClassNotFoundException, SQLException{
+
+	public static void ELIMINAR() throws ClassNotFoundException, SQLException {
 		Class.forName("com.mysql.cj.jdbc.Driver");
 
-		Connection conexion = DriverManager.getConnection("jdbc:mysql://" + host + "/" + BBDD, usuario,
-				contrasenia);
+		Connection conexion = DriverManager.getConnection("jdbc:mysql://" + host + "/" + BBDD, usuario, contrasenia);
 
-
-		
-	
 	}
-	
+
 	public static void MODIFICAR() {
+		Scanner scan = new Scanner(System.in);
 		Arbol a = new Arbol();
 		Habitat h = new Habitat();
 		a.setHabitat(h);
-		
+
+		System.out.println("Ingrese los detalles del árbol:");
+		System.out.println("nombre_comun:\n");
+		a.setNombreComun(scan.nextLine());
+		System.out.println("nombre_cientifico:\n");
+		a.setNombreCientifico(scan.nextLine());
+		System.out.println("altura:\n");
+		a.setAltura(Integer.parseInt(scan.nextLine()));
+		System.out.println("origen:\n");
+		a.setOrigen(scan.nextLine());
+		System.out.println("idHabitat:\n");
+		a.getHabitat().setId(Integer.parseInt(scan.nextLine()));
+		System.out.println("fecha_encontrada:\n");
+		a.setFecha_encontrada(Date.valueOf(scan.nextLine()));
+		System.out.println("singular:\n");
+		a.setSingular(Boolean.parseBoolean(scan.nextLine()));
+		System.out.println("¿Que id tiene el arbol que quieres cambiar?");
+		a.setId(Integer.parseInt(scan.nextLine()));
+
 		try {
-			
+
 			Connection conexion;
-		
-				conexion = DriverManager.getConnection("jdbc:mysql://" + host + "/" + BBDD, usuario,
-						contrasenia);
-			
-			
-			PreparedStatement preparedSt = conexion.prepareStatement("UPDATE arboles SET 'nombre_comun' = ?, nombre_cientifico = ?,id_habitat = ?,altura = ?,origen = ?,fecha_encontrada= ?, singular = ? WHERE id = ?");
-			
+
+			conexion = DriverManager.getConnection("jdbc:mysql://" + host + "/" + BBDD, usuario, contrasenia);
+
+			PreparedStatement preparedSt = conexion.prepareStatement(
+					"UPDATE arboles SET nombre_comun = ?, nombre_cientifico = ?,id_habitat = ?,altura = ?,origen = ?,fecha_encontrada= ?, singular = ? WHERE id = ?");
+
 			preparedSt.setString(1, a.getNombreComun());
 			preparedSt.setString(2, a.getNombreCientifico());
 			preparedSt.setInt(3, a.getHabitat().getId());
 			preparedSt.setInt(4, a.getAltura());
 			preparedSt.setString(5, a.getOrigen());
-			preparedSt.setDate(6, a.getFecha_encontrada());
+			preparedSt.setDate(6, new java.sql.Date(a.getFecha_encontrada().getTime()));
 			preparedSt.setBoolean(7, a.isSingular());
 			preparedSt.setInt(8, a.getId());
-			
-			preparedSt.execute();
+
+			preparedSt.executeUpdate();
+			System.out.println("¡Arbol modificado con exito!");
 			
 			
 			Class.forName("com.mysql.cj.jdbc.Driver");
@@ -183,7 +196,7 @@ public class GestorArboles {
 			System.out.println("Error al conectarse con la base de datos");
 			e.printStackTrace();
 		}
-		
+
 	}
 
 }
